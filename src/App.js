@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import {Configuration} from "openai";
 import Chat from "./Chat";
 import "./App.css"
 import chatClosed from './img/customer-service.svg';
 import chatOpened from './img/close.svg';
+import {chatbotContext} from "./chatbot-context";
 
 function App() {
     const [open, setOpen] = useState(false);
@@ -22,12 +22,12 @@ function App() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer YOUR-OPENAI-API-KEY'
+                    'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
                 },
                 body: JSON.stringify({
                     model: "gpt-3.5-turbo",
                     messages: [
-                        {role: "system", content: "This bot provides information based on the content of the fidea.es website. Answer questions regarding services, products, terms of service and contact details presented strictly on the site only and answer in English. If question is not related to the topic from Fidea.es website, then ask politely to user to contact our customer service team via email support@fidea.es. In case AI want's to answer: 'information is not provided by Fidea.es or is not specified on the website', then politely offer to user to contact our customer service via email support@fidea.es"},
+                        {role: "system", content: chatbotContext},
                         {role: "user", content: '' + prompt}
                     ],
                     temperature: 0.5,
